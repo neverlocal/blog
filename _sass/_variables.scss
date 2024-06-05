@@ -4,9 +4,10 @@
 //
 
 // Colors
-$blue: lightseagreen;
-$lightblue: #e0f2f0;
-$selectionblue: lighten(lightseagreen, 10%);
+$orange: lighten(orange, 0%);
+$lightOrange: lighten(orange, 10%);
+$selection: darken(orange, 10%);
+
 // Grays
 $black: #000;
 $darkerGray: #222;
@@ -14,6 +15,38 @@ $darkGray: #333;
 $gray: #666;
 $lightGray: #eee;
 $white: #fff;
+
+// Main
+$background: #f0f0f0;
+$mainfont: #404040;
+$headingFont: #222;
+
+// Tables
+$tableBorder: #cccccc;
+$tableBackground:  #f0f0f0;
+
+// Search
+$searchInput: #ccc;
+$searchBackground: #ececec;
+
+//Boxes
+$pullquoteBackground: orange;
+$blockquoteBackground: #f2e9e0;
+$mathEnvBackground: #f2e9e0;
+$codeEnvBackground: #363028;
+$thanksBackground: #f2e9e0;
+
+// Tags
+$postTagsBackground: $orange;
+$postTagsText: #fff;
+
+// Links
+$link: $orange;
+
+// Code
+$codeText: $lightOrange;
+$codeBackground: #fafafa;
+
 
 // Font stacks
 $helvetica: Helvetica, Arial, sans-serif;

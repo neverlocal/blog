@@ -48,10 +48,10 @@ html {
 }
 
 body {
-  background: #f0f0f0;
+  background: $background;
   //font-family: -system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-family: plexMono;
-  color: #404040;
+  color: $mainfont;
   line-height: 1.7;
   font-weight: 400;
   font-size: 18px;
@@ -68,7 +68,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   //font-family: -system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-family: plexMono;
-  color: $darkerGray;
+  color: $headingFont;
   font-weight: bold;
 
   line-height: 1.7;
@@ -110,7 +110,6 @@ h3 {
 
 h4 {
   font-size: 18px;
-  color: #222;
 }
 
 p {
@@ -122,26 +121,26 @@ table {
 }
 
 table tr {
-	border-top: 1px solid #cccccc;
-	background-color: #f0f0f0;
+	border-top: 1px solid $tableBorder;
+	background-color: $tableBackground;
 	margin: 0;
 	padding: 0;
 }
 
 table tr:nth-child(2n) {
-	background-color: #f0f0f0;
+	background-color: $tableBackground;
 }
 
 table tr th {
 	font-weight: bold;
-	border: 1px solid #cccccc;
+	border: 1px solid $tableBorder;
 	text-align: left;
 	margin: 0;
 	padding: 6px 13px;
 }
 
 table tr td {
-	border: 1px solid #cccccc;
+	border: 1px solid $tableBorder;
 	text-align: left;
 	margin: 0;
 	padding: 6px 13px;
@@ -173,16 +172,16 @@ table tr td :last-child {
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
-  border: 1px solid #ccc;
+  border: 1px solid $searchInput;
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 18px;
-  background-color: #fff3ff;
+  background-color: $searchBackground;
 }
 
 .share-box {
   font-weight: bold;
-  color: #222;
+  color: $headingFont;
 }
 
 span[data-pullquote] {
@@ -201,16 +200,16 @@ span[data-pullquote]:before {
   padding: 0 -5% 0 0;
   font-size: 1.3em;
   font-style: italic;
-  color: lightseagreen;
+  color: $pullquoteBackground;
   text-align: center;
 }
 
 a {
-  color: $blue;
+  color: $link;
   text-decoration: none;
 	cursor: pointer;
   &:hover, &:active {
-    color: $blue;
+    color: $link;
   }
 }
 
@@ -265,11 +264,11 @@ p > img {
 
 // Specify the color of the selection
 ::-moz-selection {
-  color: $selectionblue;
+  color: $selection;
   background: $lightGray;
 }
 ::selection {
-  color: $selectionblue;
+  color: $selection;
   background: $lightGray;
 }
 
@@ -308,7 +307,7 @@ p > img {
 
 .site-avatar {
   float: left;
-  width: 130px;
+  width: 60px;
   height: 60px;
   margin-right: 15px;
 
@@ -343,7 +342,7 @@ p > img {
   //font-family: $helveticaNeue;
   font-family: plexMono;
   font-weight: 300;
-  font-size: 22px;
+  font-size: 24px;
   letter-spacing: 1px;
   text-align: left;
 
@@ -385,7 +384,7 @@ nav {
 
     @include mobile {
       margin: 0 10px;
-      color: $blue;
+      color: $darkGray;
     }
   }
 }
@@ -412,7 +411,7 @@ nav {
     color: $gray;
     font-size: 22px;
     font-style: regular;
-    background-color: $lightblue;
+    background-color: $blockquoteBackground;
   }
 
   counter-reset: definition notation example proposition lemma theorem corollary figure;
@@ -427,7 +426,7 @@ nav {
 
   .definition, .notation, .example, .proposition, .lemma, .theorem, .corollary {
     color: $gray;
-    background-color: $lightblue;
+    background-color: $mathEnvBackground;
   }
 
   .definition:before {
@@ -531,7 +530,7 @@ nav {
     color: $gray;
     font-size: 22px;
     font-style: regular;
-    background-color: #c1e6e2;
+    background-color: $thanksBackground;
   }
 
   .you-may-like{
@@ -587,7 +586,7 @@ body:after {
 }
 
 #bar {
-    background: #000;
+    background: $black;
     height: 7px;
     background-size: cover;
     background-position: left 60%;
@@ -620,13 +619,13 @@ body:after {
 
 .author_title{
   text-align: center;
-  color: #939aa1;
+  color: $gray;
   letter-spacing: 2px;
 }
 
 .post_date{
   text-align: center;
-  color: #939aa1;
+  color: $gray;
 }
 
 .cd-container a {
@@ -772,9 +771,9 @@ Modules - reusable parts of our design
 }
 
 .text-link {
-    color: #000;
+    color: $black;
     text-decoration: none;
-    border-bottom: 1px dotted #000;
+    border-bottom: 1px dotted $black;
 }
 
 //carbon ads
@@ -858,9 +857,9 @@ Modules - reusable parts of our design
   font-size: 14.5px;
   padding: 2px 13px;
   border: none;
-  background-color: #0ec4ba;
+  background-color: $postTagsBackground;
   border-radius: 50px;
-  color: #fff;
+  color: $postTagsText;
 }
 
 .pagination a, .pagination span {
@@ -923,7 +922,7 @@ Modules - reusable parts of our design
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
-  border: 1px solid #ccc;
+  border: 1px solid $searchInput;
   border-radius: 4px;
   box-sizing: border-box;
 }
@@ -941,10 +940,10 @@ Modules - reusable parts of our design
 }
 
 .tinyletterForm {
-  border: 1px solid #ccc;
+  border: 1px solid $searchInput;
   padding: 3px;
   text-align: center;
-  background: #ececec;
+  background: $searchBackground;
   margin: 8px;
   border-radius: 5px;
 }
