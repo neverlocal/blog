@@ -2,7 +2,7 @@
 layout: post
 title:  "Obfuscating a quantum circuit using the ZX calculus"
 author: Stefano Gogioso, Richie Yeung, Fabrizio Genovese
-categories: jekyll update
+categories: ZX-calculus obfuscation
 excerpt: This is all conjectures for now, but nice conjectures nevertheless!
 usemathjax: true
 thanks: "TODO"
