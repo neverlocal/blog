@@ -1,12 +1,16 @@
 {% if page.usemathjax %}
-	<script type="text/x-mathjax-config">
+	<!-- <script type="text/x-mathjax-config">
 		MathJax.Hub.Config({
 			extensions: ["tex2jax.js"],
 			jax: ["input/TeX", "output/HTML-CSS"],
+			loader: {
+				load: ['[tex]/braket']
+			},
 			TeX: {
 				equationNumbers: {
 					autoNumber: "AMS"
-				}
+				},
+				packages: {'[+]': ['braket']}
 			},
 			tex2jax: {
 			  inlineMath: [ ['$','$'], ["\\(","\\)"] ],
@@ -20,10 +24,24 @@
 			SVG: { 
 				linebreaks: { automatic: true } 
 			}
-		});
-	</script>
-	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
+		});		  
+	</script> -->
+	<!-- <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+		<script>
+			window.MathJax = {
+			tex: {
+				tags: "ams",
+				inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+				displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+				processEscapes: true
+			},
+			options: {
+				ignoreHtmlClass: 'tex2jax_ignore',
+				processHtmlClass: 'tex2jax_process'
+			}
+			};
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script"></script>
 	<link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
 	<script src="https://tikzjax.com/v1/tikzjax.js"></script>
 {% endif %}
