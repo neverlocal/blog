@@ -13,7 +13,7 @@ The quest around building Quantum 1-Shot Signatures revolves around building pra
 
 Such equivocal hash functions have been proved to exist, for instance in [this paper](https://eprint.iacr.org/2020/107), using ordered affine partitions. Unfortunately, the proof there is essentially non-constructive, so the problem of 'actually building the thing' still stands. We had a first stab at building these gadgets explicitly [here](https://github.com/The-QSig-Commission/QSigCommissionWiki/wiki/Hash-functions-from-ordered-affine-partitions), but Lev, one of the main researchers involved in this project, quickly broke the mechanism.
 
-Now we have some other candidate constructions: Lev is working on implementing Quantum 1-shot tokens using claw-free functions -- hopefully a post about this willfollow soon! -- whereas Stefano and Richie are investingating an alternative approach based on [ZX-calculus](), which will be the focus of this post.
+Now we have some other candidate constructions: Lev is working on implementing Quantum 1-shot tokens using claw-free functions -- hopefully a post about this willfollow soon! -- whereas Stefano and Richie are investingating an alternative approach based on [ZX-calculus](https://en.wikipedia.org/wiki/ZX-calculus), which will be the focus of this post.
 
 In general, all of these endeavours piggyback to the same problem, namely that the construction used to implement an equivocal hash function needs to be *obfuscated* in some way. This has a very precise meaning in cryptography, but the layman interpretation of 'obfuscated' would be 'turn the code into a sort of black box: people can feed inputs and read outputs, but have no clue about how the program behaves'. This is called 'black-box obfuscation', and has been unfortunately proven to be [infeasible](https://dash.harvard.edu/bitstream/handle/1/12644697/9034637.pdf). The next best thing is called [indistinguishability obfuscation](https://en.wikipedia.org/wiki/Indistinguishability_obfuscation) -- abbreviated 'iO' -- and, citing Wikipedia, it means more or less something like this:
 
@@ -34,7 +34,7 @@ The [ZX calculus](https://en.wikipedia.org/wiki/ZX-calculus) is a diagrammatic c
 1. Computes the same thing;
 2. Has some nice properties, for instance it may use a lower [Toffoli gate](https://en.wikipedia.org/wiki/Toffoli_gate) count.
 
-We redirect you to [our previous post]() to know more about the ZX calculus. Everything you need to know here is that:
+We redirect you to [our previous post]({% link _posts/2024-06-11-zx-intro.md %}) to know more about the ZX calculus. Everything you need to know here is that:
 
 1. Every quantum circuit can be expressed as a ZX calculus diagram;
 2. Every ZX calculus diagram consists of a multigraph where nodes are either decorated green dots, red dots, or yellow boxes. All these components are called 'spiders';
