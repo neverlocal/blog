@@ -533,6 +533,17 @@ nav {
     background-color: $thanksBackground;
   }
 
+  .crosspost {
+    margin: 1.8em .8em;
+    /*border-left: 2px solid $gray;*/
+    padding: 0.1em 1em;
+    color: $gray;
+    font-size: 22px;
+    text-align: center;
+    font-weight: bold;
+    background-color: $crosspostBackground;
+  }
+
   .you-may-like{
     margin: 1.8em .8em;
     /*border-left: 2px solid $gray;*/
