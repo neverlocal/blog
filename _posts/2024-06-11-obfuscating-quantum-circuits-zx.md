@@ -1,25 +1,32 @@
 ---
 layout: post
-title:  "Obfuscating a quantum circuit using the ZX calculus"
-author: Stefano Gogioso, Richie Yeung, Fabrizio Genovese
+title:  "ZX-based quantum obfuscation for dummies"
+author: Fabrizio Genovese
 categories: ZX-calculus obfuscation
 excerpt: This is all conjectures for now, but nice conjectures nevertheless!
 usemathjax: true
-thanks: "TODO"
+thanks: I want to thank Stefano Gogioso and Richie Yeung, which are actively working to figure out this stuff.
 asset_path: /assetsPosts/2024-06-12-obfuscating-quantum-circuits-zx
 ---
 
-In our work around building Quantum 1-Shot Signatures, we have a couple of outstanding problems to solve.
-1. Building a cryptographic gadget called [equivocal hash functions](https://github.com/The-QSig-Commission/QSigCommissionWiki/wiki/Hash-function#equivocal-hash-function);
-2. Baking it into a quantum circuit, and simplifying it enough so that it can run on a quantum computer sooner than later.
+The quest around building Quantum 1-Shot Signatures revolves around building practical, optimized [equivocal hash functions](https://github.com/The-QSig-Commission/QSigCommissionWiki/wiki/Hash-function#equivocal-hash-function).
 
-In this post, we'll focus on 1. Such equivocal hash functions have been proved to exist, for instance in [this paper](https://eprint.iacr.org/2020/107), using ordered affine partitions. Unfortunately, this proof is essentially non-constructive, so the problem of 'actually building the thing' still stands. We had a first stab at building these gadgets explicitly [here](https://github.com/The-QSig-Commission/QSigCommissionWiki/wiki/Hash-functions-from-ordered-affine-partitions), but Lev, one of the main researchers involved in this project, quickly broke the mechanism.
+Such equivocal hash functions have been proved to exist, for instance in [this paper](https://eprint.iacr.org/2020/107), using ordered affine partitions. Unfortunately, the proof there is essentially non-constructive, so the problem of 'actually building the thing' still stands. We had a first stab at building these gadgets explicitly [here](https://github.com/The-QSig-Commission/QSigCommissionWiki/wiki/Hash-functions-from-ordered-affine-partitions), but Lev, one of the main researchers involved in this project, quickly broke the mechanism.
 
-Now we have some other candidate constructions, but pretty much all of them present a problem: The construction is a function that needs to be *obfuscated* somehow. As black box obfuscation is proven to be [infeasible](https://dash.harvard.edu/bitstream/handle/1/12644697/9034637.pdf), this leaves only [indistinguishability obfuscation](https://en.wikipedia.org/wiki/Indistinguishability_obfuscation) - abbreviated 'iO' as the best possible alternative. Io has a lot of nice properties, so assuming it gives us a very nice tool for building crypto primitives in a theoretical context, but it is totally unworkable in practice at the moment, go figure implementing it on a quantum computing device.
+Now we have some other candidate constructions: Lev is working on implementing Quantum 1-shot tokens using claw-free functions -- hopefully a post about this willfollow soon! -- whereas Stefano and Richie are investingating an alternative approach based on [ZX-calculus](), which will be the focus of this post.
 
-So, whereas we play with indistinguishability obfuscation and other gadgets on one hand, we are also exploring more esotheric alternatives on the other hand. One of these esotheric alternatives is what this post is about. To make this explanation more palatable to the layman, from now on we'll fix the following scenario:
+In general, all of these endeavours piggyback to the same problem, namely that the construction used to implement an equivocal hash function needs to be *obfuscated* in some way. This has a very precise meaning in cryptography, but the layman interpretation of 'obfuscated' would be 'turn the code into a sort of black box: people can feed inputs and read outputs, but have no clue about how the program behaves'. This is called 'black-box obfuscation', and has been unfortunately proven to be [infeasible](https://dash.harvard.edu/bitstream/handle/1/12644697/9034637.pdf). The next best thing is called [indistinguishability obfuscation](https://en.wikipedia.org/wiki/Indistinguishability_obfuscation) -- abbreviated 'iO' -- and, citing Wikipedia, it means more or less something like this:
+
+> In cryptography, indistinguishability obfuscation (abbreviated IO or iO) is a type of software obfuscation with the defining property that obfuscating any two programs that compute the same mathematical function results in programs that cannot be distinguished from each other. Informally, such obfuscation hides the implementation of a program while still allowing users to run it.
+
+This seems rather harmless but in practice allows us to implement a ton of very well-known crypto primitives, such as [public key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography), [deniable encryption](https://en.wikipedia.org/wiki/Deniable_encryption) and [functional encryption](https://en.wikipedia.org/wiki/Functional_encryption). So, Io has a lot of nice properties, and assuming it gives us a very nice tool for building crypto primitives in a theoretical context. Unfortunately, it is totally impractical at the moment, so we cannot really use it to build production stuff.
+
+So, whereas we play with indistinguishability obfuscation and other gadgets on one hand, we are also exploring more esotheric alternatives on the other hand. This basically translates into 'obtaining something like iO in our particular case by cutting as many corners as possible'. One of these esotheric alternatives is what this post is about. To make this explanation more palatable to the layman, from now on we'll fix the following scenario:
 
 > Suppose that I have a pseudorandom function, which I instantiate with some random seed $r$. Suppose furthermore that I bake this thing into a (quantum) circuit. How can I rewrite the circuit so that it is difficult to 'extract' $r$ by analyzing it?
+
+You see from this how it is not unreasonable for us to believe that we can cut some corners from the full iO setting: After all, a pseudorandom function is difficult to invert if one doesn't know the corresponding quantum seed.
+
 
 Essentially, we need to bake our function, instantiated with a random seed $r$, into a quantum cicuit. This is nothing more than a bunch of (quantum) gates, which will be passed to a quantum computer to be run. Needless to say, if someone can read $r$ the whole protocol becomes insecure, so the problem is: how do we make sure people won't be able to extract $r$ by just looking at the gates of the circuit implementation?
 
