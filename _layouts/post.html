@@ -25,6 +25,14 @@ layout: default
     
 
   <div class="entry">
+    {% if page.crosspostURL %}
+    {% if page.crosspostName %}
+    <div class="crosspost">
+      This is a cross-post from <a href="{{ page.crosspostURL }}"">{{ page.crosspostName }}</a>.
+    </div>
+    {% endif %}
+    {% endif %}
+    
     {% if page.thanks %}
     <div class="thanks">
       {{ page.thanks }}
