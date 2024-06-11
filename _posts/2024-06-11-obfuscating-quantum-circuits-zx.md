@@ -21,58 +21,49 @@ In general, all of these endeavours piggyback to the same problem, namely that t
 
 This seems rather harmless but in practice allows us to implement a ton of very well-known crypto primitives, such as [public key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography), [deniable encryption](https://en.wikipedia.org/wiki/Deniable_encryption) and [functional encryption](https://en.wikipedia.org/wiki/Functional_encryption). So, Io has a lot of nice properties, and assuming it gives us a very nice tool for building crypto primitives in a theoretical context. Unfortunately, it is totally impractical at the moment, so we cannot really use it to build production stuff.
 
-So, whereas we play with indistinguishability obfuscation and other gadgets on one hand, we are also exploring more esotheric alternatives on the other hand. This basically translates into 'obtaining something like iO in our particular case by cutting as many corners as possible'. One of these esotheric alternatives is what this post is about. To make this explanation more palatable to the layman, from now on we'll fix the following scenario:
+So, whereas we play with indistinguishability obfuscation and other gadgets on one hand, we are also exploring more esotheric alternatives on the other hand. This basically translates into 'obtaining something like iO for our particular case by cutting as many corners as possible'. One of these esotheric alternatives is what this post is about. To make this explanation more palatable to the layman, from now on we'll fix the following scenario:
 
 > Suppose that I have a pseudorandom function, which I instantiate with some random seed $r$. Suppose furthermore that I bake this thing into a (quantum) circuit. How can I rewrite the circuit so that it is difficult to 'extract' $r$ by analyzing it?
 
-You see from this how it is not unreasonable for us to believe that we can cut some corners from the full iO setting: After all, a pseudorandom function is difficult to invert if one doesn't know the corresponding quantum seed.
-
-
-Essentially, we need to bake our function, instantiated with a random seed $r$, into a quantum cicuit. This is nothing more than a bunch of (quantum) gates, which will be passed to a quantum computer to be run. Needless to say, if someone can read $r$ the whole protocol becomes insecure, so the problem is: how do we make sure people won't be able to extract $r$ by just looking at the gates of the circuit implementation?
+You see from this how it is not unreasonable for us to believe that we can cut some corners from the full iO setting: If we pick a pseudorandom function that is difficult to invert if one doesn't know the corresponding quantum seed, everything we need to do is making sure that the hardcoded seed cannot be easily extracted from the circuit. So, how do we make sure people won't be able to extract $r$ by just looking at the gates of the circuit implementation?
 
 ## Enter the ZX calculus
 
-The [ZX calculus](https://en.wikipedia.org/wiki/ZX-calculus) is a diagrammatic calculus to express quantum circuits. The cool thing about is is that it has a bunch of very disciplined rewriting rules which can be leveraged to simplify a quantum circuit. For instance, you can take a quantum circuit, translate it into a ZX diagram, and apply the rewriting rules until you obtain a circuit that:
+The [ZX calculus](https://en.wikipedia.org/wiki/ZX-calculus) is a diagrammatic calculus to express quantum circuits. The cool thing about it is that it has a bunch of very disciplined rewriting rules which can be leveraged to simplify a quantum circuit. For instance, you can take a quantum circuit, translate it into a ZX diagram, and apply the rewriting rules until you obtain a circuit that:
 
 1. Computes the same thing;
 2. Has some nice properties, for instance it may use a lower [Toffoli gate](https://en.wikipedia.org/wiki/Toffoli_gate) count.
 
-The ZX calculus looks like the picture below. In the top half of the picture, you can see the ZX calculus 'atoms', notated with the unitaries they correspond to in 'standard' quantum computing. We call these 'spiders'. The red and green spiders on rows 3 and 4 can be obtained as a special case of the $(n,m)$-legged spiders in rows 1 and 2 (they are just $(1,1)$ and $(0,1)$ spiders, respectively), and are listed explicitly only for clarity. There is also the Hadamard gate, not defined explicitly because it's really like its traditional counterpart, which is represented by a yellow box marked 'H'.
+We redirect you to [our previous post]() to know more about the ZX calculus. Everything you need to know here is that:
 
-![ZX calculus recap table]({{page.asset_path}}/zx-calculus.png)
-
-Spiders are connected by merging their legs, and in the bottom half of the picture you can see the rewriting rules. So, for instance, rule (C) says that you can always turn a green spider into a red one by applying a Hadamard gate to each of its legs. A [very deep result](https://arxiv.org/pdf/1706.09877) says that each unitary in ${\mathbb{C}^{2}}^{n}$ can be turned into a ZX diagram, and this in turn means that every quantum circuit can be turned into a bunch of spiders.
+1. Every quantum circuit can be expressed as a ZX calculus diagram;
+2. Every ZX calculus diagram consists of a multigraph where nodes are either decorated green dots, red dots, or yellow boxes. All these components are called 'spiders';
+3. The rewriting rules allow us to replace some tangles of spiders with others. For instance, I can merge spiders, of turn a 0-decorated spider with only 2 legs into an edge.
 
 ## Obfuscating circuits
 
-The underlying idea of this particular obfuscation technique we are pursuing is the following: Take for instance rules (S2): These tell you that every time you have a wire, you can introduce some spiders on it. So we could take a circuit, introduce some *redundant* spiders using (S2) and then *let them diffuse* through the circuit applying the other rules. In a nurshell, this amounts to introduce 'harmless noise' - that is, noise that cancels out completely, but then letting diffuse it into the circuit in a way so that it becomes impossible to distinguish the noise from the original gates.
+The underlying idea of this particular obfuscation technique we are pursuing consists in applying the rewriting rules in a way which is the reverse of what people usually do: Instead of simplifying a circuit, we make it worse! In detail:
 
-In a nushell, by diluting the circuit with 'noise' we let the information about the random seed $r$ of our running example dissolve into it, in a way that is not easily recoverable.
+1. We start with a ZX diagram representing our circuit:
+    [pic]
+2. We introduce some new spiders into the circuit. We can do this by leveraging the rules that tell us when to cancel a given spider, and applying them in reverse:
+    [pic]
+3. We 'balloon up' the spiders we just introduced by applying other rules:
+    [pic]
+4. We let these newly introduced spiders diffuse in the original circuit. The result is very different from the one we started with in the first picture, but these two circuits compute the same thing.
+
+In a nurshell, the technique amounts to introduce 'harmless noise' -- that is, noise that cancels out completely -- and then letting it diffuse into the circuit in a way so that it becomes impossible to distinguish the noise from the original gates.
+
+Since the amount of spiders we can pick to build the noise is immense, we conjecture that after the diffusion step it should be very hard to figure out how the circuit we started from looked like. As a comparison, imagine I take a finished Rubik cube and scramble it randomly. If you are an inexperienced player, it will be very hard for you to figure out which move I applied, and it will take you a long time to bruteforce your way up to the initial cube state. Similarly, diluting the circuit with 'noise' we let the information about the random seed $r$ of our running example dissolve into it, in a way that is not easily recoverable.
+
+## Pauli gadgets
 
 In practice, this method relies on something called [Pauli gadgets](https://arxiv.org/pdf/1906.01734), which are exactly the lego bricks we need to add to our circuits to produce the noise we need and then diffuse it. To do this properly though, we need to figure out some stuff about how these gadgets commute between each other under particular conditions we are interested in. We are exactly doing so on one hand, wereas we prepare code mocks on the other hand.
 
-### Linear algebraic explanation
-
-If you are more versed with linear algebra, see it this way: Immagine I have a composition of unitaries:
-
-$$ U_1 U_2 U_3 \dots U_n.$$
-
-Going back to our running example, one or more of these unitaries will encode my random seed $r$ in some way. If I want to make this information hard to extract, I can rewrite the composition above as:
-
-$$ U_1 I U_2 I U_3 I \dots I U_n.$$
-
-Basically, I have introduced identity matrices $I$ everywhere, which by definition do not alter the computation. Now, I can rewrite each $I$ as $V^{-1}V$, where $V$ is some unitary matrix. If I pick the $V$s wisely, so that they commute with the $U_i$ in some non-obvious way, I can end up having a circuit 
-
-$$ W_1 W_2 W_3 \dots W_m.$$
-
-Where the $W_j$ and the $U_i$ really don't look like anything alike. The idea here is that there are really *many alternatives* - as in, a continuum of them - for the $V$s, so that reconstructing the original circuit may not be computationally easy.
-
-The main reason to prefer the ZX approach to the algebraic one is that the 'diffusion step' in the ZX case is merely graph rewriting, which has already been efficiently implemented in a plethora of ways.
-
-Again, this is a bit of an oversymplification. In reality, Pauli gadgets are not exactly just 'unitaries', but the infinitesimal generators of the [Lie algebra](https://en.wikipedia.org/wiki/Special_unitary_group#Lie_algebra) $\mathfrak{su}(n)$ associated to the [Special unitary Lie group](https://en.wikipedia.org/wiki/Special_unitary_group) $SU(n)$. In the case of $\mathfrak{su}(2)$, Pauli gadgets are some of the most important single-qubit operations. Part of our work is figuring out the commutation relations between 'higher Pauli gadgets' - that is, generators of $\mathfrak{su}(n)$ for $n \geq 3$ - in purely diagrammatic terms. This would allow us to use the already developed diagrammatic-rewriting software for the ZX calculus to try this sort of obfuscation techniques.
+If you are interested in the technical bits, Pauli gadgets are the infinitesimal generators of the [Lie algebra](https://en.wikipedia.org/wiki/Special_unitary_group#Lie_algebra) $\mathfrak{su}(n)$ associated to the [Special unitary Lie group](https://en.wikipedia.org/wiki/Special_unitary_group) $SU(n)$. In the case of $\mathfrak{su}(2)$, Pauli gadgets are some of the most important single-qubit operations. In the context of the ZX calculus, Pauli gadgets admit [a very particular representation](). Part of our work consists in figuring out the commutation relations between 'higher Pauli gadgets' - that is, generators of $\mathfrak{su}(n)$ for $n \geq 3$ - in purely diagrammatic terms. This will allow us to use the already developed diagrammatic-rewriting software for the ZX calculus to try this sort of obfuscation techniques.
 
 ## Will this work?
 
-God knows! Obviously coming up with such an idea and proving that it is computationally secure are two very different beasts. We have some proof ideas that involve random walks on a graph and some other stuff, but it's still too early to say. Most importantly, we need to get more clarity around which complexity assumptions we would have to make so that such a proof could hold.
+God knows! Obviously coming up with such an idea is easy, figuring it out in detail and implementing it is difficult, and proving that it is computationally secure is even harder. We have some proof ideas that involve random walks on a graph and some other stuff, but it's still too early to say. Most importantly, we need to get more clarity around which complexity assumptions we would have to make so that such a proof could hold. In this respect, clearly the less the better.
 
-Hopefully, this will be material for a future blog post, so stay tuned!
+Hopefully, this will be material for a future blog post. For sure, we'll most likely publish a more detailed blog post in the upcoming weeks where the technique highlighted above is laid down in full detail; so stay tuned, and until the next time!
