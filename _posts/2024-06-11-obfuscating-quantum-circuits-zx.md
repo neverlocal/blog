@@ -2,7 +2,7 @@
 layout: post
 title:  "ZX-based quantum obfuscation for dummies"
 author: Fabrizio Genovese
-categories: ZX-calculus obfuscation
+categories: ZX-calculus obfuscation cryptography
 excerpt: This is all conjectures for now, but nice conjectures nevertheless!
 usemathjax: true
 thanks: I want to thank Stefano Gogioso and Richie Yeung, which are actively working to figure out this stuff.
