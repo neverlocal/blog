@@ -5,7 +5,7 @@ author: Fabrizio Genovese
 categories: ZX-calculus obfuscation cryptography
 excerpt: This is all conjectures for now, but nice conjectures nevertheless!
 usemathjax: true
-thanks: I want to thank Stefano Gogioso and Richie Yeung, which are actively working to figure out this stuff.
+thanks: I want to thank Stefano Gogioso and Richie Yeung, who are actively working to figure out this stuff. Pictures of the confusion process by Stefano Gogioso.
 asset_path: /assetsPosts/2024-06-12-obfuscating-quantum-circuits-zx
 ---
 
@@ -13,9 +13,9 @@ The quest around building Quantum 1-Shot Signatures revolves around building pra
 
 Such equivocal hash functions have been proved to exist, for instance in [this paper](https://eprint.iacr.org/2020/107), using ordered affine partitions. Unfortunately, the proof there is essentially non-constructive, so the problem of 'actually building the thing' still stands. We had a first stab at building these gadgets explicitly [here](https://github.com/The-QSig-Commission/QSigCommissionWiki/wiki/Hash-functions-from-ordered-affine-partitions), but Lev, one of the main researchers involved in this project, quickly broke the mechanism.
 
-Now we have some other candidate constructions: Lev is working on implementing Quantum 1-shot tokens using claw-free functions -- hopefully a post about this willfollow soon! -- whereas Stefano and Richie are investingating an alternative approach based on [ZX-calculus](https://en.wikipedia.org/wiki/ZX-calculus), which will be the focus of this post.
+Now we have some other candidate constructions: Lev is working on implementing Quantum 1-shot tokens using claw-free functions &mdash; hopefully a post about this willfollow soon! &mdash; whereas Stefano and Richie are investingating an alternative approach based on [ZX-calculus](https://en.wikipedia.org/wiki/ZX-calculus), which will be the focus of this post.
 
-In general, all of these endeavours piggyback to the same problem, namely that the construction used to implement an equivocal hash function needs to be *obfuscated* in some way. This has a very precise meaning in cryptography, but the layman interpretation of 'obfuscated' would be 'turn the code into a sort of black box: people can feed inputs and read outputs, but have no clue about how the program behaves'. This is called 'black-box obfuscation', and has been unfortunately proven to be [infeasible](https://dash.harvard.edu/bitstream/handle/1/12644697/9034637.pdf). The next best thing is called [indistinguishability obfuscation](https://en.wikipedia.org/wiki/Indistinguishability_obfuscation) -- abbreviated 'iO' -- and, citing Wikipedia, it means more or less something like this:
+In general, all of these endeavours piggyback to the same problem, namely that the construction used to implement an equivocal hash function needs to be *obfuscated* in some way. This has a very precise meaning in cryptography, but the layman interpretation of 'obfuscated' would be 'turn the code into a sort of black box: people can feed inputs and read outputs, but have no clue about how the program behaves'. This is called 'black-box obfuscation', and has been unfortunately proven to be [infeasible](https://dash.harvard.edu/bitstream/handle/1/12644697/9034637.pdf). The next best thing is called [indistinguishability obfuscation](https://en.wikipedia.org/wiki/Indistinguishability_obfuscation) &mdash; abbreviated 'iO' &mdash; and, citing Wikipedia, it means more or less something like this:
 
 > In cryptography, indistinguishability obfuscation (abbreviated IO or iO) is a type of software obfuscation with the defining property that obfuscating any two programs that compute the same mathematical function results in programs that cannot be distinguished from each other. Informally, such obfuscation hides the implementation of a program while still allowing users to run it.
 
@@ -45,14 +45,16 @@ We redirect you to [our previous post]({% link _posts/2024-06-11-zx-intro.md %})
 The underlying idea of this particular obfuscation technique we are pursuing consists in applying the rewriting rules in a way which is the reverse of what people usually do: Instead of simplifying a circuit, we make it worse! In detail:
 
 1. We start with a ZX diagram representing our circuit:
-    [pic]
-2. We introduce some new spiders into the circuit. We can do this by leveraging the rules that tell us when to cancel a given spider, and applying them in reverse:
-    [pic]
-3. We 'balloon up' the spiders we just introduced by applying other rules:
-    [pic]
-4. We let these newly introduced spiders diffuse in the original circuit. The result is very different from the one we started with in the first picture, but these two circuits compute the same thing.
+    ![Initial Circuit]({{page.asset_path}}/initial-circuit.png)
+2. We convert our circuit into a circuit of Pauli gadgets:
+    ![Pauli Circuit]({{page.asset_path}}/pauli-circuit.png)
+3. We introduce some random Pauli gadgets into the circuit, hiding the original structure and angles. We can do this by leveraging the rules that tell us when to cancel a given spider, and applying them in reverse:
+    ![Confusion Step 1]({{page.asset_path}}/confusion-step-1.png)
+4. We introduce more spiders into the circuit and we let them diffuse into the circuit, separating the Pauli gadget pairs from Step 3 and randomly permuting their angles.
+    ![Confusion Step 2]({{page.asset_path}}/confusion-step-2.png)
 
-In a nurshell, the technique amounts to introduce 'harmless noise' -- that is, noise that cancels out completely -- and then letting it diffuse into the circuit in a way so that it becomes impossible to distinguish the noise from the original gates.
+The final result, shown above, is very different from the one we started with in the first picture, but these two circuits compute the same thing.
+In a nurshell, the technique amounts to introduce 'harmless noise' &mdash; that is, noise that cancels out completely &mdash; and then letting it diffuse into the circuit in a way so that it becomes impossible to distinguish the noise from the original gates.
 
 Since the amount of spiders we can pick to build the noise is immense, we conjecture that after the diffusion step it should be very hard to figure out how the circuit we started from looked like. As a comparison, imagine I take a finished Rubik cube and scramble it randomly. If you are an inexperienced player, it will be very hard for you to figure out which move I applied, and it will take you a long time to bruteforce your way up to the initial cube state. Similarly, diluting the circuit with 'noise' we let the information about the random seed $r$ of our running example dissolve into it, in a way that is not easily recoverable.
 
