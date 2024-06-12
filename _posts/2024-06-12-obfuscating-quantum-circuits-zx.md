@@ -7,6 +7,7 @@ excerpt: This is all conjectures for now, but nice conjectures nevertheless!
 usemathjax: true
 thanks: I want to thank Stefano Gogioso and Richie Yeung, who are actively working to figure out this stuff. Pictures of the confusion process by Stefano Gogioso.
 asset_path: /assetsPosts/2024-06-12-obfuscating-quantum-circuits-zx
+image: /assetsPosts/2024-06-12-obfuscating-quantum-circuits-zx/confusion-step-2.png
 ---
 
 The quest around building Quantum 1-Shot Signatures revolves around building practical, optimized [equivocal hash functions](https://github.com/The-QSig-Commission/QSigCommissionWiki/wiki/Hash-function#equivocal-hash-function).
