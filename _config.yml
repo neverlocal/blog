@@ -103,3 +103,8 @@ exclude:
   - README.md
   - CNAME
 
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /images/Logo.png
