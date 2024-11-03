@@ -34,18 +34,19 @@
 }
 
 @font-face {
-  font-display: swap;
   font-family: 'Playfair Display';
-  font-style: normal;
+  src: url('../webfonts/PlayfairDisplay-Medium.woff2') format('woff');
   font-weight: 400;
-  src: url('../webfonts/PlayfairDisplay-Medium.ttf') format('ttf');
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-display: swap;
   font-family: 'Playfair Display';
+  src: url('../webfonts/PlayfairDisplay-MediumItalic.woff2') format('woff');
+  font-weight: 400;
   font-style: italic;
-  src: url('../webfonts/PlayfairDisplay-MediumItalic.ttf') format('ttf');
+  font-display: swap;
 }
 
 
@@ -65,8 +66,8 @@ body {
   font-family: Playfair Display;
   color: $mainfont;
   line-height: 1.7;
-  font-weight: 400;
-  font-size: 18px;
+  font-weight: normal;
+  font-size: 20px;
   height: 100%;
 }
 

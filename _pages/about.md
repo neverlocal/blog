@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-![QSig Commission logo](../images/Logo.jpg)
+![QSig Commission logo](../images/Logo.svg)
 
 The QSig Commission is an informally organized group of academic and industry researchers which is working on Quantum-1‐Shot-Signatures (Q1Ss). Our interests are the following:
 
