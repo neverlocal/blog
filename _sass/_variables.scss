@@ -3,56 +3,55 @@
 // VARIABLES
 //
 
+
+// --text-highlight-color: #7e2e84;
+
 // Colors
-$orange: lighten(orange, 0%);
-$lightOrange: lighten(orange, 10%);
-$selection: darken(orange, 10%);
+$highlight: #7E2E84;
+$highlightSoft: lighten($highlight, 10%);
+$highlightSoftest: lighten($highlight, 55%);
+$selection: darken($highlight, 10%);
 
 // Grays
-$black: #000;
-$darkerGray: #222;
-$darkGray: #333;
-$gray: #666;
-$lightGray: #eee;
-$white: #fff;
+$primaryGray: rgba(46, 46, 46, 1);
+$primaryGrayTransparent: rgba(46, 46, 46, 0.9);
+
+$gray: lighten($primaryGray, 10%);
+$lightGray: lighten($primaryGray, 60%);;
+$ivory: #FEFFF4;
 
 // Main
-$background: #fff;
-$mainfont: #404040;
-$headingFont: #222;
+$background: $ivory;
+$mainfont: $primaryGray;
+$lightFont: $ivory;
+$headingFont: $primaryGray;
 
 // Tables
-$tableBorder: #cccccc;
-$tableBackground:  #f0f0f0;
+$tableBorder: $highlight;
+$tableBackground:  $ivory;
 
 // Search
-$searchInput: #ccc;
-$searchBackground: #ececec;
+$searchInput: $highlight;
+$searchBackground: $highlightSoftest;
 
 //Boxes
-$pullquoteBackground: orange;
-$blockquoteBackground: #ffebd8;
-$mathEnvBackground: #ffebd8;
+$pullquoteBackground: $highlight;
+$blockquoteBackground: $highlightSoftest;
+$mathEnvBackground: $highlightSoftest;
 $codeEnvBackground: #363028;
-$thanksBackground: #ffebd8;
-$crosspostBackground: #ffd9d8;
+$thanksBackground: $highlightSoftest;
+$crosspostBackground: $highlightSoftest;
 
 // Tags
-$postTagsBackground: $orange;
+$postTagsBackground: $highlight;
 $postTagsText: #fff;
 
 // Links
-$link: $orange;
+$link: $highlight;
 
 // Code
-$codeText: $lightOrange;
+$codeText: $highlightSoft;
 $codeBackground: #fafafa;
-
-
-// Font stacks
-$helvetica: Helvetica, Arial, sans-serif;
-$helveticaNeue: "Helvetica Neue", Helvetica, Arial, sans-serif;
-$georgia: Georgia, serif;
 
 // Mobile breakpoints
 @mixin mobile {
